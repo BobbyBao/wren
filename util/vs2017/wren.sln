@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wren", "wren\wren.vcxproj", "{0143A07C-ED79-A10D-9666-8710827C1D0F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wren_lib", "lib\wren_lib.vcxproj", "{D7CC5189-C399-AC94-ECB2-9A3CD8DEE122}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wren_dll", "wren_dll\wren_dll.vcxproj", "{01E6AFD3-F265-4B64-B037-A0DD174FC784}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,8 +33,19 @@ Global
 		{D7CC5189-C399-AC94-ECB2-9A3CD8DEE122}.Release|Win32.Build.0 = Release|Win32
 		{D7CC5189-C399-AC94-ECB2-9A3CD8DEE122}.Release|x64.ActiveCfg = Release|x64
 		{D7CC5189-C399-AC94-ECB2-9A3CD8DEE122}.Release|x64.Build.0 = Release|x64
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Debug|Win32.ActiveCfg = Debug|Win32
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Debug|Win32.Build.0 = Debug|Win32
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Debug|x64.ActiveCfg = Debug|x64
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Debug|x64.Build.0 = Debug|x64
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Release|Win32.ActiveCfg = Release|Win32
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Release|Win32.Build.0 = Release|Win32
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Release|x64.ActiveCfg = Release|x64
+		{01E6AFD3-F265-4B64-B037-A0DD174FC784}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45C638D6-3FC3-4F95-B635-D6D2BBB6C489}
 	EndGlobalSection
 EndGlobal
