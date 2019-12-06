@@ -6,7 +6,7 @@
 
 #if WREN_OPT_RANDOM
 
-const char* wrenRandomSource();
+WREN_API const char* wrenRandomSource();
 WrenForeignClassMethods wrenRandomBindForeignClass(WrenVM* vm,
                                                    const char* module,
                                                    const char* className);

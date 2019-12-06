@@ -3013,6 +3013,10 @@ static void whileStatement(Compiler* compiler)
 // Unlike expressions, statements do not leave a value on the stack.
 void statement(Compiler* compiler)
 {
+#ifdef WREN_FMT
+#else
+	matchLine(compiler);
+#endif
   if (match(compiler, TOKEN_BREAK))
   {
     if (compiler->loop == NULL)
@@ -3214,6 +3218,10 @@ static bool method(Compiler* compiler, Variable classVariable)
   }
   else
   {
+#ifdef WREN_FMT
+#else
+	  matchLine(compiler);
+#endif
     consume(compiler, TOKEN_LEFT_BRACE, "Expect '{' to begin method body.");
     finishBody(&methodCompiler, signature.type == SIG_INITIALIZER);
     endCompiler(&methodCompiler, fullSignature, length);
@@ -3301,6 +3309,10 @@ static void classDefinition(Compiler* compiler, bool isForeign)
   wrenIntBufferInit(&classInfo.staticMethods);
   compiler->enclosingClass = &classInfo;
 
+#ifdef WREN_FMT
+#else
+  matchLine(compiler);
+#endif
   // Compile the method definitions.
   consume(compiler, TOKEN_LEFT_BRACE, "Expect '{' after class declaration.");
   matchLine(compiler);
