@@ -568,7 +568,7 @@ static Keyword keywords[] =
 {
   {"break",     5, TOKEN_BREAK},
   {"class",     5, TOKEN_CLASS},
-  {"construct", 9, TOKEN_CONSTRUCT},
+  {"construct",	9, TOKEN_CONSTRUCT},
   {"else",      4, TOKEN_ELSE},
   {"false",     5, TOKEN_FALSE},
   {"for",       3, TOKEN_FOR},
@@ -1788,8 +1788,16 @@ static Signature signatureFromToken(Compiler* compiler, SignatureType type)
   
   // Get the token for the method name.
   Token* token = &compiler->parser->previous;
-  signature.name = token->start;
-  signature.length = token->length;
+  if (type == SIG_INITIALIZER)
+  {
+	  signature.name = "new";
+	  signature.length = 3;
+  }
+  else 
+  {
+	  signature.name = token->start;
+	  signature.length = token->length;
+  }
   signature.type = type;
   signature.arity = 0;
 
@@ -2555,7 +2563,7 @@ void namedSignature(Compiler* compiler, Signature* signature)
 // Compiles a method signature for a constructor.
 void constructorSignature(Compiler* compiler, Signature* signature)
 {
-  consume(compiler, TOKEN_NAME, "Expect constructor name after 'construct'.");
+  //consume(compiler, TOKEN_NAME, "Expect constructor name after 'construct'.");
   
   // Capture the name.
   *signature = signatureFromToken(compiler, SIG_INITIALIZER);
@@ -3171,7 +3179,7 @@ static bool method(Compiler* compiler, Variable classVariable)
   bool isForeign = match(compiler, TOKEN_FOREIGN);
   bool isStatic = match(compiler, TOKEN_STATIC);
   compiler->enclosingClass->inStatic = isStatic;
-    
+
   SignatureFn signatureFn = rules[compiler->parser->current.type].method;
   nextToken(compiler->parser);
   

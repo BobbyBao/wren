@@ -1,11 +1,11 @@
 // Generated automatically from src/optional/wren_opt_random.wren. Do not edit.
 static const char* randomModuleSource =
 "foreign class Random {\n"
-"  construct new() {\n"
+"  construct() {\n"
 "    seed_()\n"
 "  }\n"
 "\n"
-"  construct new(seed) {\n"
+"  construct(seed) {\n"
 "    if (seed is Num) {\n"
 "      seed_(seed)\n"
 "    } else if (seed is Sequence) {\n"
