@@ -3209,12 +3209,17 @@ static int declareMethod(Compiler* compiler, Signature* signature,
 //
 // Returns `true` if it compiled successfully, or `false` if the method couldn't
 // be parsed.
-static bool method(Compiler* compiler, Variable classVariable)
+static bool method(Compiler* compiler, Variable classVariable, ObjString* className)
 {
   // TODO: What about foreign constructors?
   bool isForeign = match(compiler, TOKEN_FOREIGN);
   bool isStatic = match(compiler, TOKEN_STATIC);
   compiler->enclosingClass->inStatic = isStatic;
+
+  if (wrenStringEqualsCString(className, compiler->parser->current.start, compiler->parser->current.length))
+  {
+	  compiler->parser->current.type = TOKEN_CONSTRUCT;
+  }
 
   SignatureFn signatureFn = rules[compiler->parser->current.type].method;
   nextToken(compiler->parser);
@@ -3363,7 +3368,7 @@ static void classDefinition(Compiler* compiler, bool isForeign)
 
   while (!match(compiler, TOKEN_RIGHT_BRACE))
   {
-    if (!method(compiler, classVariable)) break;
+    if (!method(compiler, classVariable, className)) break;
     
     // Don't require a newline after the last definition.
     if (match(compiler, TOKEN_RIGHT_BRACE)) break;
