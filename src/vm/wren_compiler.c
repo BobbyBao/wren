@@ -568,7 +568,7 @@ static Keyword keywords[] =
 {
   {"break",     5, TOKEN_BREAK},
   {"class",     5, TOKEN_CLASS},
-  {"construct",	9, TOKEN_CONSTRUCT},
+  {"new",		3, TOKEN_CONSTRUCT},
   {"else",      4, TOKEN_ELSE},
   {"false",     5, TOKEN_FALSE},
   {"for",       3, TOKEN_FOR},
@@ -784,12 +784,12 @@ static void readName(Parser* parser, TokenType type)
     nextChar(parser);
   }
 
-
   // Update the type if it's a keyword.
   size_t length = parser->currentChar - parser->tokenStart;
-  if (length == 3)
+
+  if (length == 9)
   {
-	  if(memcmp(parser->tokenStart, "NEW", length) == 0)
+	  if(memcmp(parser->tokenStart, "construct", length) == 0)
 	  {
 		makeToken(parser, TOKEN_CONSTRUCT);
 		return;
@@ -2601,9 +2601,9 @@ void constructorSignature(Compiler* compiler, Signature* signature)
 static void new_(Compiler* compiler, bool canAssign)
 {
 	ignoreNewlines(compiler);
+
 	consume(compiler, TOKEN_NAME, "Expect method name after 'new'.");
 
-	//loadCoreVariable(compiler, "List");
 	name(compiler, false);
 
 	while (match(compiler, TOKEN_DOT))
@@ -2616,12 +2616,6 @@ static void new_(Compiler* compiler, bool canAssign)
 
 	// Invoke the constructor on the new instance.
 	//methodCall(CODE_CALL_0, "new", 3);
-	/*
-	Token* token = &compiler->parser->previous;
-	int symbol = wrenSymbolTableFind(&compiler->parser->module->variableNames,
-		token->start, token->length);
-	ASSERT(symbol != -1, "Should have already defined core name.");
-	emitShortArg(compiler, CODE_LOAD_MODULE_VAR, symbol);*/
 
 	Signature signature = signatureFromToken(compiler, SIG_INITIALIZER);
 	signature.type = SIG_METHOD;
