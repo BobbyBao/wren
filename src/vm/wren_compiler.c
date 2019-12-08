@@ -2329,26 +2329,6 @@ static void stringInterpolation(Compiler* compiler, bool canAssign)
   callMethod(compiler, 0, "join()", 6);
 }
 
-
-static void new_(Compiler* compiler, bool canAssign)
-{
-	ignoreNewlines(compiler);
-	consume(compiler, TOKEN_NAME, "Expect method name after 'new'.");
-
-	//loadCoreVariable(compiler, "List");
-
-
-	Token* token = &compiler->parser->previous;
-	int symbol = wrenSymbolTableFind(&compiler->parser->module->variableNames,
-		token->start, token->length);
-	ASSERT(symbol != -1, "Should have already defined core name.");
-	emitShortArg(compiler, CODE_LOAD_MODULE_VAR, symbol);
-
-	Signature signature = signatureFromToken(compiler, SIG_INITIALIZER);
-	signature.type = SIG_METHOD;
-	methodCall(compiler, CODE_CALL_0, &signature);
-}
-
 static void super_(Compiler* compiler, bool canAssign)
 {
   ClassInfo* enclosingClass = getEnclosingClass(compiler);
@@ -2615,6 +2595,37 @@ void constructorSignature(Compiler* compiler, Signature* signature)
   
   finishParameterList(compiler, signature);
   consume(compiler, TOKEN_RIGHT_PAREN, "Expect ')' after parameters.");
+}
+
+
+static void new_(Compiler* compiler, bool canAssign)
+{
+	ignoreNewlines(compiler);
+	consume(compiler, TOKEN_NAME, "Expect method name after 'new'.");
+
+	//loadCoreVariable(compiler, "List");
+	name(compiler, false);
+
+	while (match(compiler, TOKEN_DOT))
+	{
+		call(compiler, false);
+	}
+
+	// The angle brackets in the name are to ensure users can't call it directly.
+	//c.CallMethod(0, "<instantiate>");
+
+	// Invoke the constructor on the new instance.
+	//methodCall(CODE_CALL_0, "new", 3);
+	/*
+	Token* token = &compiler->parser->previous;
+	int symbol = wrenSymbolTableFind(&compiler->parser->module->variableNames,
+		token->start, token->length);
+	ASSERT(symbol != -1, "Should have already defined core name.");
+	emitShortArg(compiler, CODE_LOAD_MODULE_VAR, symbol);*/
+
+	Signature signature = signatureFromToken(compiler, SIG_INITIALIZER);
+	signature.type = SIG_METHOD;
+	methodCall(compiler, CODE_CALL_0, &signature);
 }
 
 // This table defines all of the parsing rules for the prefix and infix
