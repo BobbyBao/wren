@@ -580,7 +580,7 @@ static Keyword keywords[] =
   {"null",      4, TOKEN_NULL},
   {"return",    6, TOKEN_RETURN},
   {"static",    6, TOKEN_STATIC},
-  {"super",     5, TOKEN_SUPER},
+  {"base",		4, TOKEN_SUPER},
   {"this",      4, TOKEN_THIS},
   {"true",      4, TOKEN_TRUE},
   {"var",       3, TOKEN_VAR},
@@ -3313,7 +3313,7 @@ static void classDefinition(Compiler* compiler, bool isForeign)
   emitConstant(compiler, classNameString);
 
   // Load the superclass (if there is one).
-  if (match(compiler, TOKEN_IS))
+  if (match(compiler, TOKEN_IS) || match(compiler, TOKEN_COLON))
   {
     parsePrecedence(compiler, PREC_CALL);
   }
