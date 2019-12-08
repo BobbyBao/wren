@@ -784,8 +784,19 @@ static void readName(Parser* parser, TokenType type)
     nextChar(parser);
   }
 
+
   // Update the type if it's a keyword.
   size_t length = parser->currentChar - parser->tokenStart;
+  if (length == 3)
+  {
+	  if(memcmp(parser->tokenStart, "NEW", length) == 0)
+	  {
+		makeToken(parser, TOKEN_CONSTRUCT);
+		return;
+	  }
+
+  }
+
   for (int i = 0; keywords[i].identifier != NULL; i++)
   {
     if (length == keywords[i].length &&
@@ -2318,6 +2329,26 @@ static void stringInterpolation(Compiler* compiler, bool canAssign)
   callMethod(compiler, 0, "join()", 6);
 }
 
+
+static void new_(Compiler* compiler, bool canAssign)
+{
+	ignoreNewlines(compiler);
+	consume(compiler, TOKEN_NAME, "Expect method name after 'new'.");
+
+	//loadCoreVariable(compiler, "List");
+
+
+	Token* token = &compiler->parser->previous;
+	int symbol = wrenSymbolTableFind(&compiler->parser->module->variableNames,
+		token->start, token->length);
+	ASSERT(symbol != -1, "Should have already defined core name.");
+	emitShortArg(compiler, CODE_LOAD_MODULE_VAR, symbol);
+
+	Signature signature = signatureFromToken(compiler, SIG_INITIALIZER);
+	signature.type = SIG_METHOD;
+	methodCall(compiler, CODE_CALL_0, &signature);
+}
+
 static void super_(Compiler* compiler, bool canAssign)
 {
   ClassInfo* enclosingClass = getEnclosingClass(compiler);
@@ -2634,7 +2665,7 @@ GrammarRule rules[] =
   /* TOKEN_BANGEQ        */ INFIX_OPERATOR(PREC_EQUALITY, "!="),
   /* TOKEN_BREAK         */ UNUSED,
   /* TOKEN_CLASS         */ UNUSED,
-  /* TOKEN_CONSTRUCT     */ { NULL, NULL, constructorSignature, PREC_NONE, NULL },
+  /* TOKEN_CONSTRUCT     */ { new_, NULL, constructorSignature, PREC_NONE, NULL },
   /* TOKEN_ELSE          */ UNUSED,
   /* TOKEN_FALSE         */ PREFIX(boolean),
   /* TOKEN_FOR           */ UNUSED,
