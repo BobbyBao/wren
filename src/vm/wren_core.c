@@ -29,6 +29,12 @@ DEF_PRIMITIVE(bool_toString)
   }
 }
 
+DEF_PRIMITIVE(class_allocate)
+{
+	Value v = wrenNewInstance(vm, AS_CLASS(args[0]));
+	RETURN_VAL(v);
+}
+
 DEF_PRIMITIVE(class_name)
 {
   RETURN_OBJ(AS_CLASS(args[0])->name);
@@ -720,7 +726,7 @@ DEF_PRIMITIVE(num_isInteger)
 {
   double value = AS_NUM(args[0]);
   if (isnan(value) || isinf(value)) RETURN_FALSE;
-  RETURN_BOOL(trunc(value) == value);
+  RETURN_BOOL(((int)(value)) == value);
 }
 
 DEF_PRIMITIVE(num_isNan)
@@ -1178,6 +1184,7 @@ void wrenInitializeCore(WrenVM* vm)
   // Now we can define Class, which is a subclass of Object.
   vm->classClass = defineClass(vm, coreModule, "Class");
   wrenBindSuperclass(vm, vm->classClass, vm->objectClass);
+  PRIMITIVE(vm->classClass, "<allocate>", class_allocate);
   PRIMITIVE(vm->classClass, "name", class_name);
   PRIMITIVE(vm->classClass, "supertype", class_supertype);
   PRIMITIVE(vm->classClass, "toString", class_toString);

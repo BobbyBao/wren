@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-
+#if 0
 #include "uv.h"
 
 #include "scheduler.h"
@@ -598,3 +598,4 @@ void stdinReadStop(WrenVM* vm)
 {
   uv_read_stop(stdinStream);
 }
+#endif

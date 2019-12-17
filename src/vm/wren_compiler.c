@@ -1869,12 +1869,12 @@ static void callMethod(Compiler* compiler, int numArgs, const char* name,
 
 // Compiles an (optional) argument list for a method call with [methodSignature]
 // and then calls it.
-static void methodCall(Compiler* compiler, Code instruction,
-                       Signature* signature)
+static void methodNamedCall(Compiler* compiler, Code instruction,
+                       const char* name, int len, SignatureType signatureType)
 {
   // Make a new signature that contains the updated arity and type based on
   // the arguments we find.
-  Signature called = { signature->name, signature->length, SIG_GETTER, 0 };
+  Signature called = { name, len, SIG_GETTER, 0 };
 
   // Parse the argument list, if any.
   if (match(compiler, TOKEN_LEFT_PAREN))
@@ -1926,7 +1926,7 @@ static void methodCall(Compiler* compiler, Code instruction,
 
   // If this is a super() call for an initializer, make sure we got an actual
   // argument list.
-  if (signature->type == SIG_INITIALIZER)
+  if (signatureType == SIG_INITIALIZER)
   {
     if (called.type != SIG_METHOD)
     {
@@ -1937,6 +1937,12 @@ static void methodCall(Compiler* compiler, Code instruction,
   }
   
   callSignature(compiler, instruction, &called);
+}
+
+static void methodCall(Compiler* compiler, Code instruction,
+	Signature* signature)
+{
+	methodNamedCall(compiler, instruction, signature->name, signature->length, signature->type);
 }
 
 // Compiles a call whose name is the previously consumed token. This includes
@@ -2612,14 +2618,11 @@ static void new_(Compiler* compiler, bool canAssign)
 	}
 
 	// The angle brackets in the name are to ensure users can't call it directly.
-	//c.CallMethod(0, "<instantiate>");
+	//callMethod(compiler, 0, "<allocate>", 10);
 
 	// Invoke the constructor on the new instance.
-	//methodCall(CODE_CALL_0, "new", 3);
+	methodNamedCall(compiler, CODE_CALL_0, "new", 3, SIG_METHOD);
 
-	Signature signature = signatureFromToken(compiler, SIG_INITIALIZER);
-	signature.type = SIG_METHOD;
-	methodCall(compiler, CODE_CALL_0, &signature);
 }
 
 // This table defines all of the parsing rules for the prefix and infix

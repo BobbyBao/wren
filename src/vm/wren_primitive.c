@@ -36,7 +36,7 @@ bool validateNum(WrenVM* vm, Value arg, const char* argName)
 
 bool validateIntValue(WrenVM* vm, double value, const char* argName)
 {
-  if (trunc(value) == value) return true;
+  if (((int)(value)) == value) return true;
   RETURN_ERROR_FMT("$ must be an integer.", argName);
 }
 

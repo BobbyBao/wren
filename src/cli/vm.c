@@ -65,25 +65,27 @@ static char* readFile(const char* path)
 
 static bool isDirectory(Path* path)
 {
-  uv_fs_t request;
-  uv_fs_stat(loop, &request, path->chars, NULL);
+	return false;
+  //uv_fs_t request;
+  //uv_fs_stat(loop, &request, path->chars, NULL);
   // TODO: Check request.result value?
   
-  bool result = request.result == 0 && S_ISDIR(request.statbuf.st_mode);
+  //bool result = request.result == 0 && S_ISDIR(request.statbuf.st_mode);
   
-  uv_fs_req_cleanup(&request);
-  return result;
+  //uv_fs_req_cleanup(&request);
+  //return result;
 }
 
 static Path* realPath(Path* path)
 {
-  uv_fs_t request;
-  uv_fs_realpath(loop, &request, path->chars, NULL);
+	return path;
+//   uv_fs_t request;
+//   uv_fs_realpath(loop, &request, path->chars, NULL);
   
-  Path* result = pathNew((char*)request.ptr);
+//  Path* result = pathNew((char*)request.ptr);
   
-  uv_fs_req_cleanup(&request);
-  return result;
+  //uv_fs_req_cleanup(&request);
+ // return result;
 }
 
 // Starting at [rootDirectory], walks up containing directories looking for a
@@ -279,21 +281,21 @@ static void initVM()
   vm = wrenNewVM(&config);
 
   // Initialize the event loop.
-  loop = (uv_loop_t*)malloc(sizeof(uv_loop_t));
-  uv_loop_init(loop);
+  //loop = (uv_loop_t*)malloc(sizeof(uv_loop_t));
+  //uv_loop_init(loop);
 }
 
 static void freeVM()
 {
-  ioShutdown();
-  schedulerShutdown();
+  //ioShutdown();
+  //schedulerShutdown();
   
-  uv_loop_close(loop);
+  //uv_loop_close(loop);
   free(loop);
   
   wrenFreeVM(vm);
 
-  uv_tty_reset_mode();
+  //uv_tty_reset_mode();
   
   if (wrenModulesDirectory != NULL) pathFree(wrenModulesDirectory);
 }
@@ -340,10 +342,10 @@ WrenInterpretResult runFile(const char* path)
 
   if (afterLoadFn != NULL) afterLoadFn(vm);
   
-  if (result == WREN_RESULT_SUCCESS)
-  {
-    uv_run(loop, UV_RUN_DEFAULT);
-  }
+//   if (result == WREN_RESULT_SUCCESS)
+//   {
+//     uv_run(loop, UV_RUN_DEFAULT);
+//   }
 
   freeVM();
 
@@ -365,10 +367,10 @@ WrenInterpretResult runRepl()
 
   WrenInterpretResult result = wrenInterpret(vm, "<repl>", "import \"repl\"\n");
   
-  if (result == WREN_RESULT_SUCCESS)
-  {
-    uv_run(loop, UV_RUN_DEFAULT);
-  }
+//   if (result == WREN_RESULT_SUCCESS)
+//   {
+//     uv_run(loop, UV_RUN_DEFAULT);
+//   }
 
   freeVM();
   

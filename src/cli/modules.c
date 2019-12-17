@@ -113,7 +113,7 @@ typedef struct
 
 // The array of built-in modules.
 static ModuleRegistry modules[] =
-{
+{/*
   MODULE(io)
     CLASS(Directory)
       STATIC_METHOD("list_(_,_)", directoryList)
@@ -179,7 +179,7 @@ static ModuleRegistry modules[] =
       STATIC_METHOD("startTimer_(_,_)", timerStartTimer)
     END_CLASS
   END_MODULE
-
+*/
   SENTINEL_MODULE
 };
 
