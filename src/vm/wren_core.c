@@ -31,7 +31,8 @@ DEF_PRIMITIVE(bool_toString)
 
 DEF_PRIMITIVE(class_allocate)
 {
-	RETURN_OBJ(wrenNewInstance(vm, AS_CLASS(args[0])));
+	Value v = wrenNewInstance(vm, AS_CLASS(args[0]));
+	RETURN_VAL(v);
 }
 
 DEF_PRIMITIVE(class_name)
@@ -725,7 +726,7 @@ DEF_PRIMITIVE(num_isInteger)
 {
   double value = AS_NUM(args[0]);
   if (isnan(value) || isinf(value)) RETURN_FALSE;
-  RETURN_BOOL(trunc(value) == value);
+  RETURN_BOOL(((int)(value)) == value);
 }
 
 DEF_PRIMITIVE(num_isNan)
