@@ -3219,10 +3219,10 @@ static bool method(Compiler* compiler, Variable classVariable, ObjString* classN
   bool isStatic = match(compiler, TOKEN_STATIC);
   compiler->enclosingClass->inStatic = isStatic;
 
-  if (wrenStringEqualsCString(className, compiler->parser->current.start, compiler->parser->current.length))
-  {
-	  compiler->parser->current.type = TOKEN_CONSTRUCT;
-  }
+   if (wrenStringEqualsCString(className, compiler->parser->current.start, compiler->parser->current.length))
+   {
+ 	  compiler->parser->current.type = TOKEN_CONSTRUCT;
+   }
 
   SignatureFn signatureFn = rules[compiler->parser->current.type].method;
   nextToken(compiler->parser);

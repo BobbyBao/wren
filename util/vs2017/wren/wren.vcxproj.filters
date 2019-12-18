@@ -36,9 +36,6 @@
     <ClInclude Include="..\..\..\src\module\repl.h">
       <Filter>module</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\module\scheduler.h">
-      <Filter>module</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\optional\wren_opt_meta.h">
       <Filter>optional</Filter>
     </ClInclude>
@@ -92,12 +89,6 @@
     <ClCompile Include="..\..\..\src\module\repl.c">
       <Filter>module</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\module\scheduler.c">
-      <Filter>module</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\module\timer.c">
-      <Filter>module</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\optional\wren_opt_meta.c">
       <Filter>optional</Filter>
     </ClCompile>
@@ -124,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\vm\wren_vm.c">
       <Filter>vm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\cli\path.c">
+      <Filter>cli</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
